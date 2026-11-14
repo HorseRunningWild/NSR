@@ -61,3 +61,7 @@ body.motion-paused .bar-fill{transition:none}
 .version-switch{display:inline-flex;align-items:center;padding:3px;gap:2px;border:1px solid var(--line);border-radius:30px;font-size:10px}.version-switch a{padding:5px 12px;border-radius:25px;line-height:1.5}.version-switch a[aria-current=page]{background:var(--ink);color:var(--paper)}.version-switch a:not([aria-current]):hover{background:#dfe8de}.footer-versions{display:flex;gap:22px;flex-wrap:wrap}
 @media(max-width:1100px){.site-header>nav{display:none}.header-code{display:none}}
 @media(max-width:600px){.header-actions{gap:9px}.version-switch{font-size:10px}.version-switch a{padding:5px 11px}.footer-versions{gap:15px}}
+/* The author's original NSR logo, shared by both readings. */
+.brand{flex-shrink:0}.brand-logo{display:block;width:78px;height:78px;object-fit:contain}.boot-logo{display:block;width:150px;height:150px;object-fit:contain}footer .brand-logo{width:82px;height:82px}
+@media(max-width:850px){.site-header .brand-logo{width:65px;height:65px}}
+@media(max-width:600px){.site-header .brand-logo{width:60px;height:60px}footer .brand-logo{width:68px;height:68px}.hero-art canvas{max-width:100vw;margin-left:max(-5%,-20px)}}

@@ -21,3 +21,10 @@ video{display:block;width:100%;background:#192b39;border-radius:4px;aspect-ratio
 @media(max-width:560px){.section-heading:has(.section-reference) .section-reference{flex-basis:calc(100% - 29px)}.paper-resources{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.resource{justify-content:center;padding:9px 6px;font-size:10px;gap:5px}.resource>span{margin-left:0}.overview-enlarge{margin-block:7px 18px}.overview-enlarge>span{bottom:-10px;right:0;font-size:8px}}
 @media(max-width:360px){.resource svg{display:none}.topbar-right{gap:9px}.version-switch a{padding:5px 10px}#motion-toggle{font-size:8px}.authors{gap:10px;font-size:11px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+/* Author-supplied identity; preserve the original image and its proportions. */
+.wordmark-logo{display:block;width:60px;height:60px;object-fit:contain;flex-shrink:0}.wordmark>span{margin-left:1px;padding-left:15px}
+h1>.title-line{display:flex;justify-content:center;align-items:center;gap:17px;margin:0;max-width:none;font:inherit;letter-spacing:inherit;color:inherit}.title-line>span{min-width:0}.title-logo{display:block;width:114px;height:114px;object-fit:contain;flex-shrink:0;margin-left:-10px}h1>.paper-subtitle{margin-top:7px}
+.footer-name{display:flex;align-items:center;gap:10px}.footer-logo{display:block;width:48px;height:48px;object-fit:contain;flex-shrink:0}.paper-footer>div>span{display:block;margin-left:58px;margin-top:-8px}
+@media(max-width:1050px){.title-logo{width:95px;height:95px}.title-line{gap:13px}}
+@media(max-width:760px){.wordmark-logo{width:54px;height:54px}.title-logo{width:90px;height:90px}h1>.title-line{gap:10px}.paper-header h1{max-width:none}}
+@media(max-width:600px){h1>.title-line{flex-direction:column;gap:11px}.title-logo{width:100px;height:100px;margin:0}h1>.paper-subtitle{margin-top:18px}.footer-name{font-size:19px}.footer-logo{width:45px;height:45px}.paper-footer>div>span{margin-left:55px}}
