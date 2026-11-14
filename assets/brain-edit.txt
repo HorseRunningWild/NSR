@@ -1,0 +1,6 @@
+Mode: built-in imagegen, edit, transparent background.
+Output: assets/brain-regions.webp (WebP encoding of the generated PNG).
+Source: brain-region illustration extracted from the supplied author slides.
+
+Prompt:
+Edit the supplied scientific brain diagram. REMOVE ONLY the four detached curved arrows in the far-left margin (purple, green, orange, blue), leaving that margin fully transparent. Keep every other pixel and the overall composition as unchanged as possible. Preserve the whole brain anatomy, all colored brain regions, ALL leader lines with circular endpoints and their PFC / ATL / EC / HPC labels, and all four rounded description panels at right with their text exactly as supplied. No arrow remaining at the far left; no new elements; no rewriting, recoloring or restyling; transparent background, original wide aspect ratio. This is a minimal cleanup for a research project page.

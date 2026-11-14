@@ -6,6 +6,9 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let motion = !reduceMotion.matches;
 try { if (localStorage.getItem('nsr-motion') === 'off') motion = false; } catch (_) {}
 const palette = {ink:'#243b36', teal:'#39796b', coral:'#c96849', paper:'#f7f6f0'};
+// Population identity follows the biological figure everywhere on the page.
+const populationColors = {E:'#397bbb', Z:'#ca762f', R:'#4e8750', C:'#8750ac'};
+const populationLights = {E:'#8ebce7', Z:'#efb278', R:'#a8ca91', C:'#c8a4e4'};
 let traces = null, queryIndex = 0, traceStep = 0, playing = false, playTimer = null;
 let heroAngle = -.2, heroDrag = false, dragX = 0, burst = 0;
 let tracePoints = [], pointer = {x:-1000,y:-1000};
@@ -56,11 +59,11 @@ function drawHero(t) {
   const {ctx,w,h}=hero;ctx.clearRect(0,0,w,h);if(!w)return;
   const s=Math.min(w/540,h/470), angle=heroAngle+(motion&&!heroDrag?Math.sin(t*.15)*.08:0);
   const project=(x,y,z)=>({x:w*.51+(x*Math.cos(angle)+z*Math.sin(angle))*s,y:h*.51+(y+(z*Math.cos(angle)-x*Math.sin(angle))*.5)*s});
-  const layers=[{y:132,key:'E',name:'entities',rows:1,cols:10,color:'#728c7a'},{y:40,key:'Z',name:'bindings',rows:7,cols:13,color:'#a4b4a0'},{y:-51,key:'R',name:'relations',rows:3,cols:10,color:'#83aa98'},{y:-142,key:'C',name:'compositions',rows:2,cols:6,color:'#c4ad91'}];
+  const layers=[{y:132,key:'E',name:'entities',rows:1,cols:10,color:populationColors.E},{y:40,key:'Z',name:'bindings',rows:7,cols:13,color:populationColors.Z},{y:-51,key:'R',name:'relations',rows:3,cols:10,color:populationColors.R},{y:-142,key:'C',name:'compositions',rows:2,cols:6,color:populationColors.C}];
   const centers=[];
   layers.forEach((l,li)=>{
     const corners=[project(-172,l.y,-70),project(172,l.y,-70),project(172,l.y,70),project(-172,l.y,70)];
-    ctx.beginPath();corners.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=li===1?'#e0e7dc70':'#f1f1e780';ctx.fill();ctx.strokeStyle=li===1?'#8da58b85':'#9aac9560';ctx.lineWidth=.8;ctx.stroke();
+    ctx.beginPath();corners.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=l.color+'09';ctx.fill();ctx.strokeStyle=l.color+'70';ctx.lineWidth=.8;ctx.stroke();
     const points=[];
     for(let r=0;r<l.rows;r++)for(let c=0;c<l.cols;c++){
       const x=-145+c*290/Math.max(l.cols-1,1),z=l.rows===1?0:-48+r*96/(l.rows-1),p=project(x,l.y,z);
@@ -70,9 +73,9 @@ function drawHero(t) {
       circle(ctx,p,(li===1?1.9:3.2)*s,active?'#c77755':l.color);
     }
     centers.push(points[Math.floor(points.length*.55)]);
-    for(let k=0;k<3;k++){let a=points[(k*5+2)%points.length],b=points[(k*5+5)%points.length];line(ctx,a,b,li===3?'#c49a7655':'#739d8250',.7);}
+    for(let k=0;k<(l.key==='R'||l.key==='Z'?3:0);k++){let a=points[(k*5+2)%points.length],b=points[(k*5+5)%points.length];ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo((a.x+b.x)/2,(a.y+b.y)/2-12*s,b.x,b.y);ctx.strokeStyle=l.color+'60';ctx.lineWidth=.7;ctx.stroke();}
     if(li>0){for(let k=0;k<4;k++){const a=points[(k*7+3)%points.length];const b=project(-90+k*65,layers[li-1].y,15+k*3);line(ctx,a,b,k===1?'#c38e6a80':'#7f9d8a55',.8);if(motion){const f=(t*.28+k*.21)%1;circle(ctx,{x:a.x+(b.x-a.x)*f,y:a.y+(b.y-a.y)*f},2*s,'#c77d59');}}}
-    const lp=project(-190,l.y,79);label(ctx,l.key,lp.x,lp.y+4,16*s,palette.teal,'right','Georgia, serif');
+    const lp=project(-190,l.y,79);label(ctx,l.key,lp.x,lp.y+4,16*s,l.color,'right','Georgia, serif');
     const rp=project(180,l.y,20);label(ctx,l.name,rp.x,rp.y+3,8*s,'#6f8373');
   });
   if(burst>0){burst=Math.max(0,burst-.025);centers.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,(2.4-burst)*40*s,0,Math.PI*2);ctx.strokeStyle=`rgba(201,104,73,${burst/5})`;ctx.lineWidth=.8;ctx.stroke();});}
@@ -113,19 +116,27 @@ const layers={
 };
 let selectedLayer='E';
 function drawArchitecture(){
-  let s='';const keys=['C','R','Z','E'];
-  keys.forEach((key,i)=>{const y=28+i*68,active=key===selectedLayer,col=active?'#39796b':'#a5b29e';
-    s+=`<g opacity="${active?1:.65}"><path d="M105 ${y+3}L405 ${y-6}L455 ${y+30}L155 ${y+40}Z" fill="${active?'#e1e9da':'#eeeee5'}" stroke="${col}" stroke-width="${active?1.7:1}"/><text x="72" y="${y+28}" font-family="Newsreader, Georgia, serif" fill="${col}" font-size="29">${key}</text><text x="475" y="${y+21}" font-family="Inter, sans-serif" fill="#71816c" font-size="9">${{C:'rules',R:'relations',Z:'bindings',E:'entities'}[key]}</text>`;
-    for(let j=0;j<6;j++){const x=162+j*43,ny=y+18-j*1.1;
-      if(i<3)s+=`<path d="M${x} ${ny+4}L${x+(j%2?20:-10)} ${ny+68}" stroke="${i===0?'#bc8e68':i===2?'#81917d':'#77a187'}" stroke-width=".8" stroke-dasharray="${i===0?'3 3':'none'}"/>`;
-      s+=`<circle cx="${x}" cy="${ny}" r="${key==='Z'?4:6}" fill="${active?(j===3?'#c96849':'#6e9c7c'):'#b5c3aa'}"/>`;
-      if(key==='Z')for(let r=1;r<3;r++)s+=`<circle cx="${x-r*12}" cy="${ny-r*9}" r="2" fill="${col}"/>`;
-    }s+='</g>';
-  });$('#architecture-svg').innerHTML=s;
+  const keys=['C','R','Z','E'];
+  // A shared plane basis makes all four layers exact translated copies.
+  const point=(u,v,i)=>({x:115+285*u+52*v,y:27+68*i-8*u+30*v});
+  let svg='';
+  keys.forEach((key,i)=>{
+    const active=key===selectedLayer,col=populationColors[key],corners=[[0,0],[1,0],[1,1],[0,1]].map(([u,v])=>point(u,v,i));
+    svg+=`<g><polygon points="${corners.map(p=>`${p.x},${p.y}`).join(' ')}" fill="${col}" fill-opacity="${active?.09:.035}" stroke="${col}" stroke-opacity="${active?.8:.35}" stroke-width="${active?1.5:1}"/><text x="84" y="${46+i*68}" font-family="Newsreader, Georgia, serif" fill="${col}" font-size="29">${key}</text><text x="473" y="${46+i*68}" font-family="Inter, sans-serif" fill="${col}" font-size="9">${{C:'rules',R:'relations',Z:'bindings',E:'entities'}[key]}</text>`;
+    for(let j=0;j<6;j++){
+      const p=point(.12+j*.15,.5,i);
+      if(i<3){const next=point(.12+j*.15+(j%2?.05:-.05),.5,i+1);svg+=`<path d="M${p.x} ${p.y}L${next.x} ${next.y}" stroke="${col}" stroke-opacity=".35" stroke-width=".9" stroke-dasharray="${i===0?'3 3':'none'}"/>`;}
+      if((key==='R'||key==='Z')&&(j===1||j===3)){const next=point(.12+(j+1)*.15,.5,i);svg+=`<path d="M${p.x} ${p.y}Q${(p.x+next.x)/2} ${p.y-17} ${next.x} ${next.y}" fill="none" stroke="${col}" stroke-opacity=".6" stroke-width="1"/>`;}
+      svg+=`<circle cx="${p.x}" cy="${p.y}" r="${key==='Z'?3.6:5}" fill="${col}" opacity="${active?1:.65}"/>`;
+      if(key==='Z')for(const row of [.2,.8]){const z=point(.12+j*.15,row,i);svg+=`<circle cx="${z.x}" cy="${z.y}" r="2" fill="${col}" opacity=".5"/>`;}
+    }
+    svg+='</g>';
+  });
+  $('#architecture-svg').innerHTML=svg;
 }
-function chooseLayer(key){selectedLayer=key;const d=layers[key];$$('[data-layer]').forEach(b=>{const on=b.dataset.layer===key;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;});$('#layer-panel').setAttribute('aria-labelledby',`tab-${key}`);$('#layer-symbol').textContent=key;$('#layer-brain').textContent=d.brain;$('#layer-title').innerHTML=d.title;$('#layer-description').textContent=d.description;$('#layer-example').innerHTML=d.example;drawArchitecture();}
+function chooseLayer(key){selectedLayer=key;$('#layer-panel').style.setProperty('--population-color',populationColors[key]);const d=layers[key];$$('[data-layer]').forEach(b=>{const on=b.dataset.layer===key;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;});$('#layer-panel').setAttribute('aria-labelledby',`tab-${key}`);$('#layer-symbol').textContent=key;$('#layer-brain').textContent=d.brain;$('#layer-title').innerHTML=d.title;$('#layer-description').textContent=d.description;$('#layer-example').innerHTML=d.example;drawArchitecture();}
 $$('[data-layer]').forEach((b,i)=>{b.addEventListener('click',()=>chooseLayer(b.dataset.layer));b.addEventListener('keydown',e=>{if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;e.preventDefault();const idx=e.key==='Home'?0:e.key==='End'?3:(i+(e.key==='ArrowRight'?1:3))%4;const next=$$('[data-layer]')[idx];chooseLayer(next.dataset.layer);next.focus();});});
-drawArchitecture();
+chooseLayer('E');
 
 // Genuine model data, discretely replayed. No fabricated intermediate activations.
 const relName=(id)=>traces.relations[id%traces.relations.length]+(id>=traces.relations.length?'⁻¹':'');
@@ -133,31 +144,49 @@ const entName=(id)=>traces.entities[id];
 function activityColor(v){if(v<.001)return '#5d7765';const a=Math.min(v,1);const stops=[[99,179,141],[188,215,164],[240,160,117]];let t=a<.5?a*2:(a-.5)*2;let x=a<.5?stops[0]:stops[1],y=a<.5?stops[1]:stops[2];return `rgb(${x.map((n,i)=>Math.round(n+(y[i]-n)*t)).join(',')})`;}
 function drawTrace(){
   const {ctx,w,h}=trace;ctx.clearRect(0,0,w,h);tracePoints=[];if(!traces||!w)return;
-  const item=traces.items[queryIndex],state=item.steps[traceStep],m=traces.relations.length,k=m*2;
-  const mobile=w<600,scale=w/1000;
-  const left=w*.16,right=w*.84,depth=w*.13;
-  const projection=(column,row,totalCols,totalRows,y,planeDepth)=>({x:left+column/Math.max(totalCols-1,1)*(right-left)+(row/Math.max(totalRows-1,1)-.5)*depth,y:y+(row/Math.max(totalRows-1,1)-.5)*planeDepth-column/Math.max(totalCols-1,1)*(mobile?18:35)});
-  const rY=h*.24,zY=h*.58,eY=h*.87;
-  const rDepth=mobile?20:37,zDepth=mobile?78:115;
-  function plane(y,pd,name,letter){const points=[projection(-.4,-.6,24,14,y,pd),projection(23.4,-.6,24,14,y,pd),projection(23.4,13.6,24,14,y,pd),projection(-.4,13.6,24,14,y,pd)];ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle='#8bb28d07';ctx.fill();ctx.strokeStyle='#97b19755';ctx.lineWidth=.7;ctx.stroke();const p=points[0];label(ctx,letter,p.x-10,p.y+5,mobile?15:23,'#bdd1b4','right','Georgia, serif');label(ctx,name,w*.89,y-10,mobile?7:10,'#91ad92','left');}
-  plane(rY,rDepth,'relations','R');plane(zY,zDepth,'bindings','Z');plane(eY,0,'entities','E');
+  const item=traces.items[queryIndex],state=item.steps[traceStep],m=traces.relations.length,k=m*2,mobile=w<600;
+  const planeDepth=mobile?49:78,tilt=mobile?15:26;
+  const levels={R:h*.24,Z:h*.51,E:h*.78};
+  // One affine projection, one footprint, three translations: parallel planes.
+  const project=(u,v,type)=>({x:w*.17+u*w*.65+(v-.5)*w*.12,y:levels[type]+(v-.5)*planeDepth+(0.5-u)*tilt});
+  function plane(type,name){
+    const points=[[-.025,-.12],[1.025,-.12],[1.025,1.12],[-.025,1.12]].map(([u,v])=>project(u,v,type));
+    const col=populationLights[type];
+    ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=col+'06';ctx.fill();ctx.strokeStyle=col+'55';ctx.lineWidth=.8;ctx.stroke();
+    // A few faint grid lines establish a common perspective without visual clutter.
+    for(const u of [.25,.5,.75])line(ctx,project(u,0,type),project(u,1,type),col+'13',.6);
+    const p=points[0],right=points[1];
+    label(ctx,type,p.x-(mobile?8:17),p.y+7,mobile?20:27,col,'right','Georgia, serif');
+    label(ctx,name,right.x,right.y-10,mobile?8:10,col,'right');
+  }
+  plane('R','relations · ATL');plane('Z','bindings · EC');plane('E','entities · HPC');
   const rPositions={},zPositions={},ePositions={};
-  // R shows the same 24 directed relations as the binding grid.
-  item.columns.forEach((code,col)=>{const p=projection(col%12,Math.floor(col/12),12,2,rY,rDepth);rPositions[code]=p;});
-  for(let e=0;e<traces.entities.length;e++)item.columns.forEach((code,col)=>zPositions[`${e},${code}`]=projection(col,e,24,14,zY,zDepth));
-  traces.entities.forEach((_,e)=>ePositions[e]=projection(e,0,14,1,eY,0));
-  function curve(a,b,color,dash=false){if(!a||!b)return;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.bezierCurveTo(a.x,a.y+(b.y-a.y)*.5,b.x,b.y-(b.y-a.y)*.5,b.x,b.y);ctx.strokeStyle=color;ctx.lineWidth=mobile?1:1.4;ctx.setLineDash(dash?[3,4]:[]);ctx.stroke();ctx.setLineDash([]);}
+  item.columns.forEach((code,col)=>rPositions[code]=project((col%12)/11,Math.floor(col/12)?0.82:0.18,'R'));
+  for(let e=0;e<traces.entities.length;e++)item.columns.forEach((code,col)=>zPositions[`${e},${code}`]=project(col/(item.columns.length-1),e/(traces.entities.length-1),'Z'));
+  traces.entities.forEach((_,e)=>ePositions[e]=project(e/(traces.entities.length-1),.5,'E'));
+  function connection(a,b,color,within=false,dashed=false){
+    if(!a||!b)return;ctx.save();ctx.beginPath();ctx.moveTo(a.x,a.y);
+    if(within){const bend=Math.min(mobile?26:42,Math.max(14,Math.abs(b.x-a.x)*.12));ctx.quadraticCurveTo((a.x+b.x)/2,(a.y+b.y)/2-bend,b.x,b.y);}
+    else ctx.lineTo(b.x,b.y);
+    ctx.strokeStyle=color;ctx.lineWidth=mobile?1.2:1.6;ctx.shadowBlur=5;ctx.shadowColor=color+'40';ctx.setLineDash(dashed?[3,4]:[]);ctx.stroke();ctx.restore();
+  }
   const q=item.query,r2=item.r2,inv=r2<m?r2+m:r2-m;
-  // Curves describe the selected route, not a complete synaptic weight export.
-  if(traceStep>=1)curve(rPositions[q.r1],rPositions[r2],'#d7a77d',true);
-  if(traceStep>=2){curve(rPositions[r2],zPositions[`${q.h},${r2}`],'#b9cba0');curve(ePositions[q.h],zPositions[`${q.h},${r2}`],'#82b899');}
-  if(traceStep>=3)curve(zPositions[`${q.h},${r2}`],zPositions[`${q.t},${inv}`],'#dfab7b');
-  if(traceStep>=4)curve(zPositions[`${q.t},${inv}`],ePositions[q.t],'#dfab7b');
-  function neuron(p,v,name,type){const radius=(type==='Z'?(mobile?1.4:2.3):(mobile?3.1:4.2));if(v>.02){let glow=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,radius*4);glow.addColorStop(0,activityColor(v).replace('rgb','rgba').replace(')',',0.25)'));glow.addColorStop(1,'#d7bb8a00');ctx.fillStyle=glow;ctx.fillRect(p.x-radius*4,p.y-radius*4,radius*8,radius*8);}circle(ctx,p,radius,activityColor(v));if(v>.4){ctx.beginPath();ctx.arc(p.x,p.y,radius+2,0,Math.PI*2);ctx.strokeStyle=activityColor(v);ctx.lineWidth=.5;ctx.stroke();}tracePoints.push({...p,value:v,name,type,radius});}
+  // Selected route only; these edges are schematic, not a weight-matrix export.
+  if(traceStep>=1)connection(rPositions[q.r1],rPositions[r2],populationLights.R,true,true);
+  if(traceStep>=2){connection(rPositions[r2],zPositions[`${q.h},${r2}`],populationLights.R);connection(ePositions[q.h],zPositions[`${q.h},${r2}`],populationLights.E);}
+  if(traceStep>=3)connection(zPositions[`${q.h},${r2}`],zPositions[`${q.t},${inv}`],populationLights.Z,true);
+  if(traceStep>=4)connection(zPositions[`${q.t},${inv}`],ePositions[q.t],populationLights.E);
+  function neuron(p,v,name,type){
+    const radius=type==='Z'?(mobile?1.35:2.2):(mobile?3:4.1);
+    if(v>.02){const glow=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,radius*4);glow.addColorStop(0,activityColor(v).replace('rgb','rgba').replace(')',',0.25)'));glow.addColorStop(1,'#d7bb8a00');ctx.fillStyle=glow;ctx.fillRect(p.x-radius*4,p.y-radius*4,radius*8,radius*8);}
+    circle(ctx,p,radius,v<.001?populationLights[type]+'66':activityColor(v));
+    if(v>.4){ctx.beginPath();ctx.arc(p.x,p.y,radius+2,0,Math.PI*2);ctx.strokeStyle=activityColor(v);ctx.lineWidth=.65;ctx.stroke();}
+    tracePoints.push({...p,value:v,name,type,radius});
+  }
   item.columns.forEach(code=>neuron(rPositions[code],state.X_R[code],relName(code),'R'));
   for(let e=0;e<traces.entities.length;e++)item.columns.forEach(code=>neuron(zPositions[`${e},${code}`],state.X_Z[e*k+code],`${entName(e)} × ${relName(code)}`,'Z'));
-  traces.entities.forEach((name,e)=>{const p=ePositions[e];neuron(p,state.X_E[e],name,'E');if(e===q.h||e===q.t||(!mobile&&e%3===0)){label(ctx,name,p.x,p.y+18,mobile?7:9,e===q.t&&traceStep===4?'#e3b18a':'#9bb299','center');}});
-  if(traceStep<=1){let p=rPositions[traceStep===0?q.r1:r2];label(ctx,relName(traceStep===0?q.r1:r2),p.x,p.y-14,mobile?7:10,'#e0b28b','center', 'monospace');}
+  traces.entities.forEach((name,e)=>{const p=ePositions[e];neuron(p,state.X_E[e],name,'E');if(e===q.h||e===q.t||(!mobile&&e%3===0))label(ctx,name,p.x,p.y+18,mobile?7:9,e===q.t&&traceStep===4?'#edb697':'#a3bdce','center');});
+  if(traceStep<=1){const p=rPositions[traceStep===0?q.r1:r2];label(ctx,relName(traceStep===0?q.r1:r2),p.x,p.y-14,mobile?7:10,'#e0b28b','center','monospace');}
   if(traceStep===4){const p=ePositions[q.t];ctx.beginPath();ctx.arc(p.x,p.y,mobile?9:13,0,Math.PI*2);ctx.strokeStyle='#dfb185';ctx.lineWidth=1;ctx.stroke();}
 }
 function showStep(){
@@ -194,19 +223,75 @@ const benchmarks={
   'YAGO3-10':{mrr:[.6365,.1812,.5589,.5473,null,.380,.5625,.4678,null,.4946,.5893],hits:[59.03,9.98,50.78,49.58,null,27.40,49.56,37.39,null,37.96,52.80],time:[37080,5400,1000,83,null,null,16200,239,null,8280,1080],timeLabels:['10.3 h','1.5 h','1000 s','83 s','—','—','4.5 h','239 s','—','2.3 h','0.3 h'],context:'Second-highest MRR in this comparison, on a graph with over 120,000 entities.'},
   'FB15k-237':{mrr:[.4095,.3368,.332,.217,.3166,.300,.3276,.0972,.2734,.5114,.3649],hits:[31.61,27.07,24.7,16.57,24.45,20.9,23.49,6.35,19.77,41.64,28.45],time:[991,5400,1000,8,42840,null,2160,229,11880,37440,2160],timeLabels:['991 s','1.5 h','1000 s','8 s','11.9 h','—','0.6 h','229 s','3.3 h','10.4 h','0.6 h'],context:'Third-highest MRR in this comparison. NBFNet and ConvE achieve higher MRR.'}
 };
-let dataset='Nations',metric='mrr';
+let dataset='YAGO3-10',metric='mrr',comparison=0;
 function starred(i,m){return dataset==='YAGO3-10'&&i===5&&m!=='time'||dataset==='FB15k-237'&&(i===2||i===5&&m!=='time');}
 function formatValue(d,i,m){const v=d[m][i];if(v===null)return '—';return (m==='time'?d.timeLabels[i]:m==='hits'?v.toFixed(2)+'%':v.toFixed(4))+(starred(i,m)?'*':'');}
+function timeDisplay(d,i){return (d.time[i]===1080?'18 min':d.timeLabels[i]).replace(/ (s|min|h)(\*)?$/, ' <small>$1$2</small>');}
+function pointDescription(i){const d=benchmarks[dataset];return `${methods[i]} · ${metric==='mrr'?'MRR':'Hits@1'} ${formatValue(d,i,metric)} · ${formatValue(d,i,'time')} reported training time`;}
+function selectComparison(i){if(i===10)return;comparison=i;drawResults();}
 function drawResults(){
-  const d=benchmarks[dataset],rows=methods.map((name,i)=>({name,i,v:d[metric][i]})).filter(x=>x.v!==null).sort((a,b)=>metric==='time'?a.v-b.v:b.v-a.v);
-  const max=Math.max(...rows.map(x=>metric==='time'?Math.log10(x.v+1):x.v));
-  $('#benchmark-chart').innerHTML=rows.map(({name,i,v})=>`<div class="bar-row ${name==='NSR'?'nsr':''}"><span>${name==='NSR'?'● ':''}${name}</span><div class="bar-track"><div class="bar-fill" style="width:${(metric==='time'?Math.log10(v+1):v)/max*100}%"></div></div><span class="bar-value">${formatValue(d,i,metric)}</span></div>`).join('');
-  $('#benchmark-chart').setAttribute('aria-label',`${dataset}, ${metric==='time'?'training time, logarithmic scale':metric}. `+rows.map(x=>`${x.name}: ${formatValue(d,x.i,metric)}`).join('; '));
-  $('#result-value').textContent=formatValue(d,10,metric);$('#result-metric').textContent=metric==='mrr'?'Mean reciprocal rank':metric==='hits'?'Hits@1':'Reported training time';$('#training-value').textContent=d.timeLabels[10];$('#result-context').textContent=d.context;
+  const d=benchmarks[dataset];
+  const rows=methods.map((name,i)=>({name,i,v:d[metric][i],time:d.time[i]})).filter(p=>p.v!==null&&p.time!==null);
+  if(!rows.some(p=>p.i===comparison))comparison=rows.find(p=>p.i!==10).i;
+  $('#compare-select').innerHTML=rows.filter(p=>p.i!==10).map(p=>`<option value="${p.i}"${p.i===comparison?' selected':''}>${p.name}</option>`).join('');
+  const compact=$('#benchmark-chart').clientWidth<500,W=compact?480:700,H=compact?390:420;
+  const x0=52,x1=W-30,y0=35,y1=H-75;
+  const logMin=Math.floor(Math.log10(Math.min(...rows.map(p=>p.time)))),logMax=Math.ceil(Math.log10(Math.max(...rows.map(p=>p.time))));
+  const maxY=metric==='mrr'?1:100;
+  const px=time=>x0+(Math.log10(time)-logMin)/(logMax-logMin)*(x1-x0),py=value=>y1-value/maxY*(y1-y0);
+  let svg=`<svg viewBox="0 0 ${W} ${H}" role="group" aria-label="${dataset}: accuracy versus reported training time. Select a baseline point to compare it with NSR."><text x="${x0}" y="14" class="plot-axis-title">${metric==='mrr'?'MRR':'Hits@1 (%)'} ↑</text>`;
+  for(let j=0;j<=4;j++){const v=j*maxY/4,y=py(v);svg+=`<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" class="plot-grid"/><text x="${x0-12}" y="${y+4}" text-anchor="end" class="plot-tick">${metric==='mrr'?v.toFixed(2):v}</text>`;}
+  const ticks=[[1,'1 s'],[10,'10 s'],[60,'1 min'],[600,'10 min'],[3600,'1 h'],[36000,'10 h'],[86400,'24 h']];
+  let lastTick=-100;
+  ticks.filter(([v])=>Math.log10(v)>=logMin&&Math.log10(v)<=logMax).forEach(([v,name])=>{const x=px(v);if(x-lastTick<48)return;lastTick=x;svg+=`<line x1="${x}" y1="${y0}" x2="${x}" y2="${y1}" class="plot-grid vertical"/><text x="${x}" y="${y1+23}" text-anchor="middle" class="plot-tick">${name}</text>`;});
+  svg+=`<text x="${(x0+x1)/2}" y="${H-12}" text-anchor="middle" class="plot-axis-title">Reported training time → <tspan class="plot-tick">(log scale)</tspan></text>`;
+  const a={x:px(d.time[10]),y:py(d[metric][10])},b={x:px(d.time[comparison]),y:py(d[metric][comparison])};
+  svg+=`<path d="M${a.x} ${a.y}L${b.x} ${b.y}" class="comparison-line"/>`;
+  // Place the emphasized labels first; other labels avoid their boxes and all dots.
+  const positions=rows.map(p=>({...p,x:px(p.time),y:py(p.v)})),occupied=positions.map(p=>({x:p.x-8,y:p.y-8,w:16,h:16}));
+  const labelOrder=[...positions].sort((a,b)=>(b.i===10?3:b.i===comparison?2:0)-(a.i===10?3:a.i===comparison?2:0));
+  const labels=new Map();
+  labelOrder.forEach(p=>{
+    if(compact&&p.i!==10&&p.i!==comparison)return;
+    const tw=p.name.length*6.4+10,th=19;
+    const candidates=[[12,-10],[-tw-12,-10],[-tw/2,-32],[-tw/2,13],[12,-30],[-tw-12,13],[12,17],[-tw/2,31]];
+    for(const [dx,dy] of candidates){const r={x:p.x+dx,y:p.y+dy,w:tw,h:th};if(r.x<x0-15||r.x+r.w>x1+23||r.y<y0-13||r.y+r.h>y1+5)continue;if(occupied.some(o=>r.x<o.x+o.w+3&&r.x+r.w+3>o.x&&r.y<o.y+o.h+2&&r.y+r.h+2>o.y))continue;labels.set(p.i,r);occupied.push(r);break;}
+  });
+  // Selected points render last so nearby methods cannot hide the comparison.
+  positions.sort((a,b)=>(a.i===10?3:a.i===comparison?2:0)-(b.i===10?3:b.i===comparison?2:0)).forEach(p=>{
+    const nsr=p.i===10,selected=p.i===comparison,r=labels.get(p.i);
+    svg+=`<g class="plot-point ${nsr?'nsr':selected?'selected':''}" data-method="${p.i}" ${nsr?'role="img"':'role="button" tabindex="0"'} aria-label="${pointDescription(p.i)}${nsr?'':'. Compare with NSR.'}"><title>${pointDescription(p.i)}</title><circle class="point-target" cx="${p.x}" cy="${p.y}" r="15"/>${nsr||selected?`<circle class="point-halo" cx="${p.x}" cy="${p.y}" r="${nsr?13:11}"/>`:''}<circle class="point-dot" cx="${p.x}" cy="${p.y}" r="${nsr?6.5:selected?5.5:4}"/>`;
+    if(r)svg+=`<rect class="point-label-bg" x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" rx="3"/><text x="${r.x+5}" y="${r.y+13}" class="point-label">${p.name}</text>`;
+    svg+='</g>';
+  });
+  $('#benchmark-chart').innerHTML=svg+'</svg>';
+  $('#plot-readout').textContent=pointDescription(comparison);
+  $$('.plot-point').forEach(el=>{
+    const i=Number(el.dataset.method);
+    el.addEventListener('pointerenter',()=>$('#plot-readout').textContent=pointDescription(i));
+    el.addEventListener('pointerleave',()=>$('#plot-readout').textContent=pointDescription(comparison));
+    el.addEventListener('focus',()=>$('#plot-readout').textContent=pointDescription(i));
+    el.addEventListener('click',()=>selectComparison(i));
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectComparison(i);$(`[data-method="${i}"]`)?.focus();}});
+  });
+  $('#nsr-time').innerHTML=timeDisplay(d,10);$('#baseline-time').innerHTML=timeDisplay(d,comparison);
+  $('#baseline-name').textContent=methods[comparison];$('#comparison-name').textContent=methods[comparison];
+  $('#accuracy-label').textContent=metric==='mrr'?'MRR ↑':'Hits@1 ↑';
+  $('#nsr-accuracy').textContent=formatValue(d,10,metric);$('#baseline-accuracy').textContent=formatValue(d,comparison,metric);
+  const faster=d.time[10]<d.time[comparison],equal=d.time[10]===d.time[comparison];
+  const ratio=faster?d.time[comparison]/d.time[10]:d.time[10]/d.time[comparison];
+  $('#time-ratio').textContent=equal?'1:1':ratio.toFixed(1)+'×';
+  $('#ratio-description').textContent=equal?'Equal reported training time':`${faster?methods[comparison]+' / NSR':'NSR / '+methods[comparison]} reported training time`;
+  const fraction=(100*d.time[10]/d.time[comparison]).toFixed(1);
+  $('#result-context').textContent=equal?`Both methods report ${d.timeLabels[10]} on ${dataset}.` : faster?`On ${dataset}, NSR takes ${fraction}% of ${methods[comparison]}’s reported training time. Compare the accuracy alongside it.`:`On ${dataset}, NSR takes ${ratio.toFixed(1)}× as long as ${methods[comparison]} in the reported runs. Compare the accuracy alongside it.`;
+  $('.time-ratio').classList.toggle('longer',!faster&&!equal);
   $('#benchmark-table').innerHTML=`<table><caption class="sr-only">${dataset} reported benchmark results</caption><thead><tr><th scope="col">Method</th><th scope="col">MRR ↑</th><th scope="col">Hits@1 ↑</th><th scope="col">Training time ↓</th></tr></thead><tbody>${methods.map((n,i)=>`<tr class="${n==='NSR'?'highlight':''}"><th scope="row">${n}</th><td>${formatValue(d,i,'mrr')}</td><td>${formatValue(d,i,'hits')}</td><td>${formatValue(d,i,'time')}</td></tr>`).join('')}</tbody></table>`;
 }
 $$('[data-dataset]').forEach(b=>b.addEventListener('click',()=>{dataset=b.dataset.dataset;$$('[data-dataset]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));drawResults();}));
-$('#metric-select').addEventListener('change',e=>{metric=e.target.value;drawResults();});drawResults();
+$('#metric-select').addEventListener('change',e=>{metric=e.target.value;drawResults();});
+$('#compare-select').addEventListener('change',e=>selectComparison(Number(e.target.value)));
+let chartWidth=0;new ResizeObserver(([entry])=>{const w=Math.round(entry.contentRect.width);if(w!==chartWidth){chartWidth=w;drawResults();}}).observe($('#benchmark-chart'));
+drawResults();
 
 function copyFallback(text) {
   const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.append(ta);ta.focus();ta.select();const ok=document.execCommand('copy');ta.remove();$('#copy-citation').focus();return ok;
