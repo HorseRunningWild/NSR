@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f6f0">
+  <title>NSR — A little structure. A new way to reason.</title>
+  <meta name="description" content="Neural Structural Reasoner. A brain-inspired architecture that puts knowledge in neural connectivity and makes reasoning visible. NeurIPS 2026.">
+  <meta property="og:title" content="Neural Structural Reasoner · NeurIPS 2026">
+  <meta property="og:description" content="What if the structure of a network was the structure of its knowledge? Explore NSR through interactive experiments and real neural activation traces.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://horserunningwild.github.io/NSR/">
+  <meta property="og:image" content="https://horserunningwild.github.io/NSR/assets/social.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="boot" id="boot" aria-hidden="true"><svg viewBox="0 0 120 42"><path d="M15 28L45 12L75 30L105 10"/><circle cx="15" cy="28" r="5"/><circle cx="45" cy="12" r="5"/><circle cx="75" cy="30" r="5"/><circle cx="105" cy="10" r="5"/></svg><span>Wiring a little reasoning<span class="loading-dots">…</span></span><small>entities → relations → possibilities</small></div>
+  <canvas id="ambient" aria-hidden="true"></canvas>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="NSR — return to top and spark the network"><svg viewBox="0 0 36 32" aria-hidden="true"><path d="M5 25L15 7L30 22L5 25M15 7L18 25"/><circle cx="5" cy="25" r="3"/><circle cx="15" cy="7" r="3"/><circle cx="30" cy="22" r="3"/></svg>nsr<span class="brand-dot">.</span></a>
+    <nav aria-label="Main navigation"><a href="#idea">The idea</a><a href="#architecture">The architecture</a><a href="#reasoning">The reasoning</a><a href="#results">The evidence</a></nav>
+    <div class="header-actions"><button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="false" aria-label="Pause decorative animation"><span class="motion-indicator"></span><span id="motion-label">Motion on</span></button><a class="header-code" href="https://github.com/navbrainlab/Neural-Structural-Reasoner-NSR" target="_blank" rel="noopener">Code ↗</a></div>
+  </header>
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="tiny-star">✳</span> NEURIPS 2026 <span class="eyebrow-sep">/</span> NEUROAI</div>
+        <h1 id="hero-title">Neural<br>Structural<br><em>Reasoner<span class="title-period">.</span></em></h1>
+        <p class="hero-subtitle">A brain-inspired architecture for<br>reasoning over structured knowledge.</p>
+        <p class="hero-thought">What if the structure of a network<br>was the structure of its <em>knowledge?</em></p>
+        <div class="hero-links"><a class="button primary" href="https://arxiv.org/abs/2609.36620" target="_blank" rel="noopener">Read the paper <span>↗</span></a><a class="text-link" href="#reasoning">Play with the reasoner <span>↓</span></a></div>
+      </div>
+      <div class="hero-art">
+        <div class="art-topline"><span class="live-dot"></span> A NETWORK WITH SOMETHING ON ITS MIND</div>
+        <canvas id="hero-network" role="img" aria-label="An animated illustration of four connected neural populations. Drag to rotate the network."></canvas>
+        <div class="art-handnote">a thought, taking shape <svg viewBox="0 0 80 45" aria-hidden="true"><path d="M4 3Q55 0 60 34M45 26L61 36L70 21"/></svg></div>
+        <div class="art-caption"><span><i class="key-dot teal"></i> structure <i class="key-dot coral"></i> activity</span><span>drag to wander ↔</span></div>
+      </div>
+      <div class="hero-bottom"><div class="authors"><a href="https://horserunningwild.github.io/" target="_blank" rel="noopener">Zixing Jia<sup>1,2,3,4 *</sup></a><span>Yuhang Pan<sup>1,2,3 *</sup></span><span>Ni Ji<sup>1,2,3 †</sup></span><small>* Equal contribution · † Corresponding author</small></div><a class="scroll-note" href="#idea">FOLLOW THE CONNECTIONS <span>↓</span></a></div>
+    </section>
+
+    <section class="section wrap" id="idea" aria-labelledby="idea-title">
+      <div class="section-kicker"><span>01 / THE QUESTION</span><span>A DIFFERENT STARTING POINT</span></div>
+      <div class="section-intro"><h2 id="idea-title">The world has structure.<br><em>Where does it go?</em></h2><p>Paris is in France. France is in Europe. The connection tells us something no entity can tell us alone.<br><br>Embeddings encode these relationships in numerical representations. NSR asks: what if we keep the relational structure <strong>explicit in the network itself?</strong></p></div>
+      <div class="compression-lab">
+        <div class="lab-top"><span class="lab-label"><span class="tiny-star">✳</span> A SMALL THOUGHT EXPERIMENT</span><span class="lab-tag">interactive illustration</span></div>
+        <div id="compression-scene" class="compression-scene"><svg viewBox="0 0 1000 300" id="compression-svg" role="img" aria-label="A relational graph of Paris, France and Europe transforms into three illustrative numeric vectors as you move the slider."></svg></div>
+        <div class="compression-bottom"><div class="range-labels"><label for="compress-range">Explicit connections</label><span>Vector representations</span></div><input type="range" id="compress-range" min="0" max="100" value="0" aria-label="Transform the graph into illustrative vector representations"><p id="compression-caption" aria-live="polite">Follow the arrows: Paris → France → Europe. The path is right there.</p><button class="text-link restore-button" id="restore-structure" type="button">Bring the structure back <span>↶</span></button></div>
+      </div>
+      <p class="figure-note">A visual analogy, not an embedding algorithm. Vector models can encode relations implicitly; the distinction here is whether the relational topology remains directly inspectable.</p>
+    </section>
+
+    <div class="manifesto"><div class="wrap"><span class="tiny-star">✳</span><p>Knowledge in the <em>connections.</em><br>Reasoning in the <em>activity.</em></p><span class="manifesto-note">That’s the idea<br>behind NSR.</span></div></div>
+
+    <section class="section wrap" id="architecture" aria-labelledby="architecture-title">
+      <div class="section-kicker"><span>02 / THE ARCHITECTURE</span><span>INSPIRED BY THE BRAIN</span></div>
+      <div class="section-intro"><h2 id="architecture-title">Four populations.<br><em>One connected idea.</em></h2><p>Different kinds of knowledge get different neural populations. Inspired by complementary brain functions, these populations bind entities to relations and learn how relations fit together.</p></div>
+      <div class="architecture-grid">
+        <div class="architecture-visual"><div class="diagram-caption">FROM BIOLOGICAL INSPIRATION …</div><img class="brain-image" src="assets/brain-regions.webp" width="1725" height="912" alt="Brain regions inspiring NSR: prefrontal cortex for relational integration; anterior temporal lobe for concepts; entorhinal cortex for relational maps; hippocampus for relational memory." loading="lazy"><div class="diagram-caption">… TO A COMPUTATIONAL ARCHITECTURE</div><svg viewBox="0 0 560 310" id="architecture-svg" role="img" aria-label="Four linked populations C, R, Z and E. Select a population to explore its role."></svg><div class="connection-legend"><span><i class="line-key fixed"></i>Fixed</span><span><i class="line-key encoded"></i>Fact-encoded</span><span><i class="line-key learned"></i>Learned</span></div></div>
+        <div class="architecture-details"><div class="layer-tabs" role="tablist" aria-label="Neural populations"><button type="button" role="tab" aria-selected="true" aria-controls="layer-panel" id="tab-E" data-layer="E">E<span>Entities</span></button><button type="button" role="tab" aria-selected="false" aria-controls="layer-panel" id="tab-Z" data-layer="Z" tabindex="-1">Z<span>Bindings</span></button><button type="button" role="tab" aria-selected="false" aria-controls="layer-panel" id="tab-R" data-layer="R" tabindex="-1">R<span>Relations</span></button><button type="button" role="tab" aria-selected="false" aria-controls="layer-panel" id="tab-C" data-layer="C" tabindex="-1">C<span>Compositions</span></button></div><div id="layer-panel" role="tabpanel" aria-labelledby="tab-E" tabindex="0"><span class="layer-symbol" id="layer-symbol">E</span><p class="eyebrow" id="layer-brain">HIPPOCAMPUS → ENTITY POPULATION</p><h3 id="layer-title">Give every entity<br>a place to belong.</h3><p id="layer-description">A dedicated neuron represents each entity. Stable identities let the network refer to the same thing across different facts and queries.</p><div class="layer-example" id="layer-example">E<sub>Paris</sub> · E<sub>France</sub> · E<sub>Europe</sub></div></div><p class="figure-note">The brain correspondences motivate the design. They are not a claim of biological equivalence.</p></div>
+      </div>
+    </section>
+
+    <section class="reasoning-section" id="reasoning" aria-labelledby="reasoning-title"><div class="wrap">
+      <div class="section-kicker"><span>03 / THE REASONING</span><span class="live-label"><span class="live-dot"></span> REAL RECORDED ACTIVATIONS</span></div>
+      <div class="section-intro"><h2 id="reasoning-title">Don’t just get an answer.<br><em>Watch it happen.</em></h2><p>A query sets the network in motion. Follow the activity from a relation, through an entity–relation binding, to a candidate answer.<br><br>These are five recorded states from the Nations model—the same data behind our prototype animation.</p></div>
+      <div class="reasoning-lab" id="reasoning-lab">
+        <div class="reasoning-toolbar"><div><label class="small-label" for="query-select">ASK THE NETWORK</label><select id="query-select" disabled><option>Loading recorded queries…</option></select></div><div class="query-answer"><span class="small-label">ENTITY READOUT</span><strong id="answer-value">?</strong></div></div>
+        <div class="trace-stage"><canvas id="trace-canvas" role="img" aria-label="Recorded neural activations in the relation R, binding Z and entity E populations. Use the step controls and text summary to follow the inference."></canvas><div class="trace-inspector" id="trace-inspector">Hover a neuron to inspect its activity</div><span class="trace-stage-note">R → Z → E<br>24 of 110 binding columns shown</span></div>
+        <div class="trace-controls"><button class="round-button" id="trace-play" type="button" aria-label="Play recorded inference" disabled>▶</button><button class="round-button secondary-round" id="trace-reset" type="button" aria-label="Reset inference to step 1" disabled>↶</button><div class="trace-progress"><label for="trace-step">DYNAMICS STEP <strong id="step-count">1 / 5</strong></label><input type="range" id="trace-step" min="0" max="4" value="0" step="1" aria-label="Recorded dynamics step" disabled></div><button class="step-button" id="trace-next" type="button" disabled>Next step →</button></div>
+        <div class="trace-narration" aria-live="polite"><span id="trace-number">01</span><div><h3 id="trace-title">Cue the relation.</h3><p id="trace-description">Loading the recorded activation data…</p></div><span class="trace-swatch"><i></i>0 → 1<br>activation</span></div>
+        <div class="readout-strip" id="readout-strip" aria-label="Top entity activations at the selected step"></div>
+      </div>
+      <div class="trace-footnotes"><p>Recorded replay, not live inference. Three illustrative traces selected for a clear, correct top-1 readout; not an aggregate performance sample. Node activity comes from the model. Curves show the selected pathway schematically. This E–R–Z example does not display composition-layer activity.</p><div><a href="data/traces.json" download>Download trace data ↗</a><button type="button" class="plain-button" id="open-prototype">See the original animation ↗</button></div></div>
+    </div></section>
+
+    <section class="section wrap learning" id="learning" aria-labelledby="learning-title"><div class="section-kicker"><span>04 / THE LEARNING</span><span>LOCAL CHANGES. REUSABLE STRUCTURE.</span></div><div class="section-intro"><h2 id="learning-title">Connections that learn<br><em>to connect the dots.</em></h2><p>Local Hebbian updates strengthen relation associations and learn compositions, without backpropagation. The connections that learn are also the connections used to reason.</p></div><div class="learning-grid"><article><span class="mini-index">01 / RELATIONS BECOME RULES</span><div class="rule-illustration" aria-label="An illustrative father-of relation composed twice implies grandfather-of"><span>father_of</span><b>+</b><span>father_of</span><b>→</b><span>grandfather_of</span></div><h3>A relation can be a route.</h3><p>Compositions make multi-step patterns reusable. The example above illustrates the idea; below are composition patterns learned on Nations.</p><img src="assets/composition-rules.webp" alt="Learned Nations composition routes involving exportbooks, releconomicaid, relexportbooks, economicaid and embassy." loading="lazy" width="720" height="450"></article><article><span class="mini-index">02 / STRUCTURE BECOMES ORGANIZATION</span><img class="clusters" src="assets/nations-clusters.webp" alt="Projection of learned Nations representations shows concept-like groupings associated with historical political blocs." loading="lazy" width="720" height="450"><h3>Patterns emerge from experience.</h3><p>Learned relational representations organize Nations entities into concept-like groups associated with historical political blocs. These are patterns in this dataset, rather than supplied group labels.</p></article></div></section>
+
+    <section class="section results-section" id="results" aria-labelledby="results-title"><div class="wrap"><div class="section-kicker"><span>05 / THE EVIDENCE</span><span>STRUCTURE, PUT TO THE TEST</span></div><div class="section-intro"><h2 id="results-title">Competitive performance.<br><em>A lighter learning process.</em></h2><p>NSR is competitive across knowledge-graph benchmarks, with low reported training times. Its strengths vary by dataset—explore the full comparison.</p></div><div class="results-toolbar"><div class="dataset-tabs" role="group" aria-label="Benchmark dataset"><button type="button" data-dataset="Nations" aria-pressed="true">Nations</button><button type="button" data-dataset="Kinship" aria-pressed="false">Kinship</button><button type="button" data-dataset="YAGO3-10" aria-pressed="false">YAGO3-10</button><button type="button" data-dataset="FB15k-237" aria-pressed="false">FB15k-237</button></div><label class="metric-label">Metric <select id="metric-select"><option value="mrr">MRR ↑</option><option value="hits">Hits@1 ↑</option><option value="time">Training time ↓</option></select></label></div><div class="results-layout"><div id="benchmark-chart" class="benchmark-chart" role="img" aria-label="Benchmark comparison"></div><aside class="result-summary"><span class="small-label">NEURAL STRUCTURAL REASONER</span><strong id="result-value">0.8142</strong><span id="result-metric">Mean reciprocal rank</span><div class="result-time"><strong id="training-value">3 s</strong><span>reported training time</span></div><p id="result-context">Second-highest MRR among the compared methods on Nations.</p><a class="text-link" href="https://arxiv.org/abs/2609.36620" target="_blank" rel="noopener">See the experimental setup ↗</a></aside></div><p class="figure-note">Source: NeurIPS author slides, slides 8–9. MRR and Hits@1 measure link prediction; higher is better. Training times depend on the reported hardware and protocols, and are not hardware-normalized. * denotes a baseline value quoted from prior work. Missing results are omitted. Time bars use a logarithmic scale.</p><details class="data-table-details"><summary>View all reported numbers <span>+</span></summary><div class="table-scroll" id="benchmark-table"></div></details></div></section>
+
+    <section class="section wrap film-section" id="talk" aria-labelledby="talk-title"><div class="section-kicker"><span>06 / THE WHOLE STORY</span><span>A FEW MINUTES WITH NSR</span></div><div class="film-header"><h2 id="talk-title">Let’s walk through it.</h2><a class="text-link" href="assets/neurips-slides.pptx" download>Take the slides with you ↗</a></div><video id="author-video" controls playsinline preload="none" poster="assets/talk-poster.jpg" aria-label="NeurIPS author talk in English with burned-in subtitles"><source src="assets/author-talk.mp4" type='video/mp4; codecs="avc1.640028, mp4a.40.2"'><source src="assets/author-talk.webm" type='video/webm; codecs="vp9, opus"'>Your browser does not support embedded video. <a href="assets/author-talk.mp4">Download the author talk.</a></video><nav class="video-chapters" aria-label="Author talk chapters"><button type="button" data-time="0">00:00 <span>The idea</span></button><button type="button" data-time="43.92">00:44 <span>Brain → model</span></button><button type="button" data-time="75.88">01:16 <span>Reasoning</span></button><button type="button" data-time="97.36">01:37 <span>Learning</span></button><button type="button" data-time="187.08">03:07 <span>Results</span></button></nav><p class="figure-note">4 min 28 sec · English · Subtitled · 1.1× original presentation speed</p></section>
+
+    <section class="closing wrap" id="resources"><div class="closing-top"><div><p class="eyebrow">KEEP THE CONNECTIONS GOING</p><h2>A little structure.<br><em>A new way to reason.</em></h2></div><div class="resource-links"><a href="https://arxiv.org/abs/2609.36620" target="_blank" rel="noopener">Read the paper <span>↗</span></a><a href="https://github.com/navbrainlab/Neural-Structural-Reasoner-NSR" target="_blank" rel="noopener">Explore the code <span>↗</span></a><a href="assets/neurips-slides.pptx" download>Download the slides <span>↓</span></a><a href="assets/author-talk.mp4" download>Download the talk <span>↓</span></a></div></div><div class="citation"><div><span class="small-label">IF NSR CONNECTS WITH YOUR RESEARCH</span><button type="button" id="copy-citation">Copy BibTeX <span>⧉</span></button></div><pre id="citation-text">@misc{jia2026neuralstructuralreasoner,
+  title={Neural Structural Reasoner: A Brain-inspired Architecture
+         for Reasoning over Structured Knowledge},
+  author={Zixing Jia and Yuhang Pan and Ni Ji},
+  year={2026},
+  eprint={2609.36620},
+  archivePrefix={arXiv},
+  primaryClass={cs.AI},
+  url={https://arxiv.org/abs/2609.36620}
+}</pre><span id="copy-status" class="sr-only" aria-live="polite"></span></div><div class="affiliations"><p><sup>1</sup> Beijing Institute for Brain Research, CAMS &amp; PUMC<br><sup>2</sup> Chinese Institute for Brain Research, Beijing</p><p><sup>3</sup> Beijing Key Laboratory of Brain Science and Brain-Machine Interface<br><sup>4</sup> Sun Yat-sen University</p></div></section>
+  </main>
+  <footer class="wrap"><a class="brand" href="#" aria-label="Back to top">nsr<span class="brand-dot">.</span></a><p>Made of neurons, relations, and a little curiosity.</p><a href="https://github.com/HorseRunningWild/NSR" target="_blank" rel="noopener">Page source ↗</a></footer>
+  <dialog id="prototype-dialog"><div class="dialog-top"><h3>The original activation trace</h3><button type="button" id="close-prototype" aria-label="Close original animation">×</button></div><img id="prototype-image" src="assets/prototype-static.png" alt="Original prototype visualization: Cuba, timesincewar, USA, with five recorded E/R/Z activation states." width="1980" height="1100"><p>The same recorded Nations trajectory, as shown in the original visualization.</p><a href="assets/prototype.gif" download>Download GIF ↗</a></dialog>
+  <noscript><div class="noscript-notice">Interactive experiments need JavaScript. The paper, slides, video and source code remain available through the links on this page.</div></noscript>
+</body>
+</html>

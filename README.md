@@ -1,0 +1,52 @@
+# Neural Structural Reasoner — project page
+
+Interactive research page for **Neural Structural Reasoner: A Brain-inspired Architecture for Reasoning over Structured Knowledge**, NeurIPS 2026.
+
+- Website: https://horserunningwild.github.io/NSR/
+- Paper: https://arxiv.org/abs/2609.36620
+- Research code: https://github.com/navbrainlab/Neural-Structural-Reasoner-NSR
+
+## Local preview
+
+No build step or package installation is needed:
+
+```sh
+python -m http.server 8765
+```
+
+Open http://localhost:8765. Use an HTTP server rather than opening `index.html` as a file, because the reasoning demo fetches a local JSON file.
+
+## What is interactive
+
+- A brief neural-wiring introduction and a draggable, animated four-population illustration.
+- A slider that illustrates explicit graph topology versus numerical representations.
+- Keyboard-accessible E/Z/R/C tabs explaining the architecture and its biological inspirations.
+- A five-step replay of **recorded model activations** from Nations, with three queries, playback, scrubbing, neuron inspection and entity readouts.
+- Dataset and metric switches for benchmark comparisons, with an accessible data table.
+- The author talk, downloadable slides, original prototype GIF and copyable BibTeX.
+
+Decorative motion respects the system's reduced-motion preference and can be paused. Recorded replay runs only when requested. Off-screen decorative canvases pause; playback pauses when the tab is hidden. Fonts are hosted locally. There are no analytics, trackers, external scripts or runtime dependencies.
+
+## Content and provenance
+
+- Narrative and exact benchmark values: supplied `Neurips_Slides.pptx`, especially slides 8–9; the public arXiv paper; supplied explanatory article `NeurIPS'26.pdf`.
+- Brain-region, composition and clustering figures: original images extracted from the supplied author slides, resized and encoded as WebP for the web.
+- Video: supplied `Neurips_Author_Talk_EN_1.1x_animated_burned.mp4`; the poster is a frame from that video. An additional 1280px VP9/Opus WebM version provides a fallback for browsers without H.264 support. Clickable chapter cues use the video’s embedded chapter times. English subtitles are burned into the video.
+- Prototype animation: supplied `NSR_Dynamic/NSR_Visualize/figures/prototype/prototype_anim.gif`.
+- Trace data: `NSR_Dynamic/NSR_Visualize/artifacts/trajectories.pkl`, the same source as `prototype_visualize.py`. The JSON includes a SHA-256 digest of the source artifact and the selection criteria. All E/R/Z values are retained, rounded to seven decimal places; 24 of the 110 Z columns are displayed. Three inverse-relation examples with a unique correct top-1 unfiltered readout were selected for explanation, **not** to represent aggregate accuracy. The diagram's curves illustrate the selected pathway and are not a complete weight matrix. There are no C-population activations in this recorded dataset.
+- Hero motion, vector morph, and the father/grandfather rule are conceptual illustrations, not measured model outputs.
+- Fonts: Newsreader and Inter, distributed under the SIL Open Font License; license files are in `assets/`.
+
+To re-export trusted research artifacts (requires NumPy):
+
+```sh
+python scripts/export_traces.py /path/to/NSR_Dynamic/NSR_Visualize
+```
+
+## Maintenance and publishing
+
+`index.html` contains the story, links and semantic controls; `style.css` the responsive design; `app.js` the canvases, interactions and transcribed benchmark values; `data/traces.json` the measured activations. Keep model outputs distinct from visual illustrations. Preserve metric units, reported-runtime qualifications and asterisks for quoted baseline values.
+
+GitHub Pages serves the `main` branch at the repository root. `.nojekyll` keeps this a static site. Commit and push changes to `main` to publish. Asset URLs are relative so the site also works beneath a project subpath. Large media are loaded on demand.
+
+The research assets remain attributable to their original authors. This repository is the presentation website; the linked research repository is the source of truth for the model implementation.

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://horserunningwild.github.io/NSR/sitemap.xml
