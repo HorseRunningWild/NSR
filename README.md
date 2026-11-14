@@ -1,8 +1,9 @@
-# Neural Structural Reasoner — project page
+# Neural Structural Reasoner — Project & Blog
 
-Interactive research page for **Neural Structural Reasoner: A Brain-inspired Architecture for Reasoning over Structured Knowledge**, NeurIPS 2026.
+Two complementary research pages for **Neural Structural Reasoner: A Brain-inspired Architecture for Reasoning over Structured Knowledge**, NeurIPS 2026.
 
-- Website: https://horserunningwild.github.io/NSR/
+- Academic Project: https://horserunningwild.github.io/NSR/project/
+- Interactive Blog: https://horserunningwild.github.io/NSR/
 - Paper: https://arxiv.org/abs/2609.36620
 - Research code: https://github.com/navbrainlab/Neural-Structural-Reasoner-NSR
 
@@ -16,7 +17,13 @@ python -m http.server 8765
 
 Open http://localhost:8765. Use an HTTP server rather than opening `index.html` as a file, because the reasoning demo fetches a local JSON file.
 
-## What is interactive
+## Two versions
+
+The **Project** (`project/index.html`) is the academic reading: full paper title and authors, collapsible affiliations, abstract, method overview, interactive triple encoding, paper figures, experimental comparisons and full tables, presentation, and citation. It uses a restrained blue-gray design and a section index (a sticky margin index on wide screens). Figures can be enlarged without leaving the page.
+
+The **Blog** (`index.html`) retains the original animated, exploratory narrative and recorded neural replay. Both versions link to each other and share `encoding.js`, `encoding.css`, and `benchmarks.js` so encoding mechanics and benchmark values stay consistent.
+
+## What is interactive (Blog)
 
 - A brief neural-wiring introduction and a draggable, animated four-population illustration.
 - A slider that illustrates explicit graph topology versus numerical representations.
@@ -30,6 +37,8 @@ Decorative motion respects the system's reduced-motion preference and can be pau
 
 ## Content and provenance
 
+- Project abstract, mechanism, and implementation qualifications: revised named-author arXiv manuscript (2609.36620v1), especially §§3–4 and Appendix A.2.1. NSR timings refer to the accelerated static-graph implementation, not stepwise online neural simulation.
+- Project overview (`project/overview.svg`): original vector schematic; selected neurons and edges, no measured activations or invented performance values. `assets/paper-reasoning.png` is the unchanged reasoning figure extracted from the supplied paper (Figure 2), whose Brazil / embassy / UK example is retained in the revised manuscript.
 - Narrative and exact benchmark values: supplied `Neurips_Slides.pptx`, especially slides 8–9; the public arXiv paper; supplied explanatory article `NeurIPS'26.pdf`.
 - Brain-region, composition and clustering figures: original images extracted from the supplied author slides, encoded as WebP for the web. The brain figure was minimally edited with built-in imagegen to remove the four detached left-margin arrows; anatomy, region colors, leader labels and description panels are retained. The edit prompt is recorded in `assets/brain-edit.txt`.
 - Video: supplied `Neurips_Author_Talk_EN_1.1x_animated_burned.mp4`; the poster is a frame from that video. An additional 1280px VP9/Opus WebM version provides a fallback for browsers without H.264 support. Clickable chapter cues use the video’s embedded chapter times. English subtitles are burned into the video.
@@ -47,7 +56,7 @@ python scripts/export_traces.py /path/to/NSR_Dynamic/NSR_Visualize
 
 ## Maintenance and publishing
 
-`index.html` contains the story, links and semantic controls; `style.css` the responsive design; `app.js` the canvases, interactions and transcribed benchmark values; `data/traces.json` the measured activations; `encoding.js` and `encoding.css` the self-contained triple-encoding demonstration. Keep model outputs distinct from visual illustrations. Preserve metric units, reported-runtime qualifications and asterisks for quoted baseline values.
+`index.html` contains the story, links and semantic controls; `style.css` the responsive design; `app.js` the Blog canvases and interactions; `benchmarks.js` the shared transcribed results and comparison controls; `project/` the academic page and its dedicated layout and controls; `data/traces.json` the measured activations; `encoding.js` and `encoding.css` the self-contained triple-encoding demonstration. Keep model outputs distinct from visual illustrations. Preserve metric units, reported-runtime qualifications and asterisks for quoted baseline values.
 
 GitHub Pages serves the `main` branch at the repository root. `.nojekyll` keeps this a static site. Commit and push changes to `main` to publish. Asset URLs are relative so the site also works beneath a project subpath. Large media are loaded on demand.
 

@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="470" height="445" viewBox="290 0 470 445" fill="#20364a" role="img" aria-labelledby="overview-mobile-title overview-mobile-desc">
+  <title id="overview-mobile-title">Encoding Paris capital_of France into NSR</title>
+  <desc id="overview-mobile-desc">An enlarged schematic of the four NSR populations. The entity neurons for Paris and France have fixed connections to their relation-indexed Z bindings. The fact writes straight R–Z connections and a curved bidirectional Z–Z connection of weight one. C is not modified by encoding this fact and is learned separately. Only selected neurons and connections are shown.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse"><path d="M1 1L5 3L1 5" fill="none" stroke="#8b9aa4" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <marker id="fact-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse"><path d="M1 1L5 3L1 5" fill="none" stroke="#ca762f" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <style>
+      text{font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
+      .eyebrow{font-size:14px;font-weight:600;letter-spacing:1.55px}
+      .heading{font-size:21px;font-weight:550;letter-spacing:-.3px}
+      .body{font-size:12px;fill:#697983}
+      .tiny{font-size:15px;fill:#697983}
+      .node-label{font-size:17px;font-weight:500}
+      .math{font-family:Georgia,'Times New Roman',serif;font-style:italic}
+    </style>
+  </defs>
+  <rect x="290" width="470" height="445" rx="5" fill="#fbfbf8"/>
+  <!-- All four planes use the same affine projection. -->
+  <text x="319" y="30" class="eyebrow" fill="#697983">ENCODING A FACT</text>
+  <text x="319" y="62" class="heading">(Paris, capital_of, France)</text>
+  <g stroke-width="1">
+    <path d="M347 125L716 113L751 147L382 159Z" fill="#8750ac" fill-opacity=".025" stroke="#d9d3e0"/>
+    <path d="M347 187L716 175L751 209L382 221Z" fill="#4e8750" fill-opacity=".035" stroke="#cfdbcc"/>
+    <path d="M347 249L716 237L751 271L382 283Z" fill="#ca762f" fill-opacity=".04" stroke="#e5d5c5"/>
+    <path d="M347 311L716 299L751 333L382 345Z" fill="#397bbb" fill-opacity=".035" stroke="#ccdbe6"/>
+  </g>
+  <g class="math" font-size="26" text-anchor="middle">
+    <text x="323" y="146" fill="#8750ac">C</text>
+    <text x="323" y="208" fill="#4e8750">R</text>
+    <text x="323" y="270" fill="#ca762f">Z</text>
+    <text x="323" y="332" fill="#397bbb">E</text>
+  </g>
+  <g font-size="16" text-anchor="end">
+    <text x="749" y="101" fill="#8750ac">compositions</text>
+    <text x="749" y="169" fill="#4e8750">relations</text>
+    <text x="749" y="232" fill="#ca762f">bindings</text>
+  </g>
+  <!-- C is present in the architecture; this fact does not modify it. -->
+  <g fill="#8750ac" opacity=".3">
+    <circle cx="407" cy="140" r="4"/><circle cx="463" cy="138" r="4"/><circle cx="519" cy="136" r="4"/><circle cx="575" cy="134" r="4"/><circle cx="631" cy="132" r="4"/><circle cx="687" cy="130" r="4"/>
+  </g>
+  <text x="366" y="121" class="tiny" style="fill:#8750ac">learned separately</text>
+  <!-- Fixed E–Z connectivity; the few shown links are a schematic subset. -->
+  <g stroke="#a6b6c2" stroke-width="1" opacity=".6">
+    <path d="M410 326L397 256M410 326L409 268M410 326L420 278"/>
+    <path d="M466 324L453 254M466 324L465 266M466 324L476 276"/>
+    <path d="M522 322L509 252M522 322L521 264M522 322L532 274"/>
+    <path d="M578 320L565 250M578 320L577 262M578 320L588 272"/>
+    <path d="M634 318L621 248M634 318L633 260M634 318L644 270"/>
+    <path d="M690 316L677 246M690 316L689 258M690 316L700 268"/>
+  </g>
+  <!-- The encoded fact selects head–forward and tail–inverse Z bindings. -->
+  <g fill="#ca762f" opacity=".28">
+    <circle cx="397" cy="256" r="2.6"/><circle cx="409" cy="268" r="2.6"/><circle cx="420" cy="278" r="2.6"/>
+    <circle cx="453" cy="254" r="2.6"/><circle cx="465" cy="266" r="2.6"/><circle cx="476" cy="276" r="2.6"/>
+    <circle cx="509" cy="252" r="2.6"/><circle cx="521" cy="264" r="2.6"/><circle cx="532" cy="274" r="2.6"/>
+    <circle cx="565" cy="250" r="2.6"/><circle cx="577" cy="262" r="2.6"/><circle cx="588" cy="272" r="2.6"/>
+    <circle cx="621" cy="248" r="2.6"/><circle cx="633" cy="260" r="2.6"/><circle cx="644" cy="270" r="2.6"/>
+    <circle cx="677" cy="246" r="2.6"/><circle cx="689" cy="258" r="2.6"/><circle cx="700" cy="268" r="2.6"/>
+  </g>
+  <path d="M466 324L453 254M634 318L644 270" stroke="#397bbb" stroke-width="1.8" opacity=".75"/>
+  <path d="M463 200L453 254M631 194L644 270" stroke="#4e8750" stroke-width="1.8"/>
+  <path d="M460 252Q545 213 637 267" fill="none" stroke="#ca762f" stroke-width="2" marker-start="url(#fact-arrow)" marker-end="url(#fact-arrow)"/>
+  <rect x="518" y="228" width="60" height="23" rx="10" fill="#fbfbf8"/>
+  <text x="548" y="245" font-size="15" fill="#a85f23" text-anchor="middle">w = 1</text>
+  <g fill="#4e8750" opacity=".26">
+    <circle cx="407" cy="202" r="4"/><circle cx="519" cy="198" r="4"/><circle cx="575" cy="196" r="4"/><circle cx="687" cy="192" r="4"/>
+  </g>
+  <g fill="#4e8750">
+    <circle cx="463" cy="200" r="10" fill-opacity=".12"/><circle cx="463" cy="200" r="5"/>
+    <circle cx="631" cy="194" r="10" fill-opacity=".12"/><circle cx="631" cy="194" r="5"/>
+  </g>
+  <text x="463" y="184" text-anchor="middle" class="math" font-size="19" fill="#4e8750">r</text>
+  <text x="631" y="178" text-anchor="middle" class="math" font-size="19" fill="#4e8750">r⁻¹</text>
+  <g fill="#ca762f">
+    <circle cx="453" cy="254" r="10" fill-opacity=".13"/><circle cx="453" cy="254" r="4.5"/>
+    <circle cx="644" cy="270" r="10" fill-opacity=".13"/><circle cx="644" cy="270" r="4.5"/>
+  </g>
+  <text x="449" y="240" text-anchor="end" font-size="16" fill="#a85f23">(Paris, r)</text>
+  <text x="727" y="294" text-anchor="end" font-size="16" fill="#a85f23">(France, r⁻¹)</text>
+  <g fill="#397bbb" opacity=".28">
+    <circle cx="410" cy="326" r="4"/><circle cx="522" cy="322" r="4"/><circle cx="578" cy="320" r="4"/><circle cx="690" cy="316" r="4"/>
+  </g>
+  <g fill="#397bbb">
+    <circle cx="466" cy="324" r="11" fill-opacity=".1"/><circle cx="466" cy="324" r="5"/>
+    <circle cx="634" cy="318" r="11" fill-opacity=".1"/><circle cx="634" cy="318" r="5"/>
+  </g>
+  <text x="466" y="353" text-anchor="middle" class="node-label" fill="#397bbb">Paris</text>
+  <text x="634" y="347" text-anchor="middle" class="node-label" fill="#397bbb">France</text>
+  <path d="M330 385H355" stroke="#a6b6c2" stroke-width="1.7"/>
+  <text x="365" y="390" class="tiny">fixed E–Z</text>
+  <path d="M530 385H555" stroke="#4e8750" stroke-width="2"/>
+  <text x="565" y="390" class="tiny">encoded R–Z</text>
+  <path d="M330 415Q342 405 355 415" fill="none" stroke="#ca762f" stroke-width="2"/>
+  <text x="365" y="420" class="tiny">encoded Z–Z · bidirectional, w = 1</text>
+</svg>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f7f6f0">
-  <title>NSR — A little structure. A new way to reason.</title>
+  <title>NSR Blog — A little structure. A new way to reason.</title>
   <meta name="description" content="Neural Structural Reasoner. A brain-inspired architecture that puts knowledge in neural connectivity and makes reasoning visible. NeurIPS 2026.">
   <meta property="og:title" content="Neural Structural Reasoner · NeurIPS 2026">
   <meta property="og:description" content="What if the structure of a network was the structure of its knowledge? Explore NSR through interactive experiments and real neural activation traces.">
@@ -13,9 +13,10 @@
   <meta property="og:image" content="https://horserunningwild.github.io/NSR/assets/social.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=20261114-2">
+  <link rel="stylesheet" href="style.css?v=20261114-3">
   <link rel="stylesheet" href="encoding.css?v=20261114-1">
-  <script defer src="app.js?v=20261114-2"></script>
+  <script defer src="app.js?v=20261114-3"></script>
+  <script defer src="benchmarks.js?v=20261114-3"></script>
   <script defer src="encoding.js?v=20261114-1"></script>
 </head>
 <body>
@@ -25,7 +26,7 @@
   <header class="site-header">
     <a class="brand" href="#" aria-label="NSR — return to top and spark the network"><svg viewBox="0 0 36 32" aria-hidden="true"><path d="M5 25L15 7L30 22L5 25M15 7L18 25"/><circle cx="5" cy="25" r="3"/><circle cx="15" cy="7" r="3"/><circle cx="30" cy="22" r="3"/></svg>nsr<span class="brand-dot">.</span></a>
     <nav aria-label="Main navigation"><a href="#idea">The idea</a><a href="#architecture">The architecture</a><a href="#reasoning">The reasoning</a><a href="#results">The evidence</a></nav>
-    <div class="header-actions"><button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="false" aria-label="Pause decorative animation"><span class="motion-indicator"></span><span id="motion-label">Motion on</span></button><a class="header-code" href="https://github.com/navbrainlab/Neural-Structural-Reasoner-NSR" target="_blank" rel="noopener">Code ↗</a></div>
+    <div class="header-actions"><div class="version-switch" role="navigation" aria-label="Page version"><a href="project/">Project</a><a href="./" aria-current="page">Blog</a></div><button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="false" aria-label="Pause decorative animation"><span class="motion-indicator"></span><span id="motion-label">Motion on</span></button><a class="header-code" href="https://github.com/navbrainlab/Neural-Structural-Reasoner-NSR" target="_blank" rel="noopener">Code ↗</a></div>
   </header>
   <main id="main">
     <section class="hero wrap" aria-labelledby="hero-title">
@@ -149,7 +150,7 @@
   url={https://arxiv.org/abs/2609.36620}
 }</pre><span id="copy-status" class="sr-only" aria-live="polite"></span></div></section>
   </main>
-  <footer class="wrap"><a class="brand" href="#" aria-label="Back to top">nsr<span class="brand-dot">.</span></a><p>Made of neurons, relations, and a little curiosity.</p><a href="https://github.com/HorseRunningWild/NSR" target="_blank" rel="noopener">Page source ↗</a></footer>
+  <footer class="wrap"><a class="brand" href="#" aria-label="Back to top">nsr<span class="brand-dot">.</span></a><p>Made of neurons, relations, and a little curiosity.</p><div class="footer-versions"><a href="project/">Academic Project ↗</a><a href="https://github.com/HorseRunningWild/NSR" target="_blank" rel="noopener">Page source ↗</a></div></footer>
   <dialog id="prototype-dialog"><div class="dialog-top"><h3>The original activation trace</h3><button type="button" id="close-prototype" aria-label="Close original animation">×</button></div><img id="prototype-image" src="assets/prototype-static.png" alt="Original prototype visualization: Cuba, timesincewar, USA, with five recorded E/R/Z activation states." width="1980" height="1100"><p>The same recorded Nations trajectory, as shown in the original visualization.</p><a href="assets/prototype.gif" download>Download GIF ↗</a></dialog>
   <noscript><div class="noscript-notice">Interactive experiments need JavaScript. The paper, slides, video and source code remain available through the links on this page.</div></noscript>
 </body>
